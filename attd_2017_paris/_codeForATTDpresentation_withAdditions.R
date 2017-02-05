@@ -51,13 +51,12 @@ plotReportingDF<-subset(plotReportingDF,nHbA1cValuesInFrame>0)  # for HbA1c peri
 plotReportingDF<-data.table(plotReportingDF)
 
 
-plotfilename <- paste("../GlCoSy/plots/attdAbstractPlots.pdf",sep="")
+plotfilename <- paste("./attdPresentationPlots.pdf",sep="")
 pdf(plotfilename, width=16, height=9)
 
 ## IQR
 ## most recent HbA1c in range (15 months)
 boxplot(plotReportingDF$IQR ~ cut(plotReportingDF$lastHbA1cInFrame,breaks=seq(30,200,10)),las=3,varwidth=T,ylim=c(0,10),plot=T,main="IQR vs last measured HbA1c (x axis)")
-
 
 plot(plotReportingDF$lastHbA1cInFrame,plotReportingDF$IQR)
 cor.test(plotReportingDF$lastHbA1cInFrame,plotReportingDF$IQR)
@@ -205,7 +204,16 @@ for (i in seq(1,30,1)) {
 ## most recent HbA1c in range (15 months)
 boxplot(plotReportingDF$minGlu ~ cut(plotReportingDF$lastHbA1cInFrame,breaks=seq(30,200,10)),las=3,varwidth=T,ylim=c(1,10),plot=T,main="admission minimum glucose vs most recent HbA1c value")
 
-boxplot(plotReportingDF$minGlu ~ cut(plotReportingDF$eAGyyyyDiff,breaks=seq(-30,30,2)),las=3,varwidth=T,ylim=c(0,20),plot=T,main="IQR vs last measured HbA1c (x axis)")
+boxplot(plotReportingDF$minGlu ~ cut(plotReportingDF$yyyy,breaks=seq(1,28,1)),las=3,varwidth=T,ylim=c(1,10),plot=T,main="admission minimum glucose vs first CBG value")
+
+boxplot(plotReportingDF$minGlu ~ cut(plotReportingDF$eAGyyyyDiff,breaks=seq(-30,30,2)),las=3,varwidth=T,ylim=c(0,10),plot=T,main="minGlu vs AGN (x axis)")
+
+boxplot(plotReportingDF$minGlu ~ cut(sqrt(plotReportingDF$eAGyyyyDiff^2),breaks=seq(0,30,1)),las=3,varwidth=T,ylim=c(0,8),plot=T,main="minGlu vs distance from AGN==0 (x axis)")
+
+plot(sqrt(plotReportingDF$eAGyyyyDiff^2), plotReportingDF$minGlu, ylim=c(0,10))
+fit <- lm(plotReportingDF$minGlu ~ sqrt(plotReportingDF$eAGyyyyDiff^2))
+abline(fit, col="red")
+
 
 
 
@@ -217,6 +225,9 @@ boxplot(plotReportingDF$minGlu ~ cut(plotReportingDF$eAGyyyyDiff,breaks=seq(-30,
 
 ## most recent HbA1c in range (15 months)
 boxplot(plotReportingDF$maxGlu ~ cut(plotReportingDF$lastHbA1cInFrame,breaks=seq(30,200,10)),las=3,varwidth=T,ylim=c(10,28),plot=T,main="admission maximum glucose vs most recent HbA1c value")
+
+boxplot(plotReportingDF$maxGlu ~ cut(plotReportingDF$eAGyyyyDiff,breaks=seq(-30,30,2)),las=3,varwidth=T,ylim=c(5,28),plot=T,main="IQR vs last measured HbA1c (x axis)")
+
 
 ######################################################
 ## propertion of admissions with hypoglycaemia
