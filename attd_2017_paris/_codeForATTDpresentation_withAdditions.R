@@ -41,6 +41,8 @@ reportingDF$AGN3<-reportingDF$eAG-reportingDF$medianFirst3CBGs
 #
 reportingDF$AGN4<-reportingDF$eAG-reportingDF$medianFirst4CBGs
 
+plotReportingDF$diabetesDurationYears <- (plotReportingDF$dateplustime1 - plotReportingDF$diagnosisDateUnix) / (60*60*24*365.25)
+
 
 reportingDF$hypo<-ifelse(reportingDF$ID_ADMISSIONhypoEpisodes4.60>0,1,0)
 
@@ -391,3 +393,6 @@ survivalPlotReportingDF$diabetesDuration<-survivalPlotReportingDF$dateplustime1 
 simpleSurvivalPlot(survivalPlotReportingDF,survivalPlotReportingDF$eAGyyyyDiff,90,"T1DM AGN",2)
 simpleSurvivalPlot(survivalPlotReportingDF,sqrt((survivalPlotReportingDF$eAGyyyyDiff - (quantile(survivalPlotReportingDF$eAGyyyyDiff)[3]))^2),60,"T1DM AGN",2)
 
+
+## ad hoc plot generation for talk
+hist(plotReportingDF$eAGyyyyDiff, breaks=seq(-28,28,0.11), xlab=("AGN (mmol/l)"), main=paste("Distribution of AGN values. n admissions= ",nrow(plotReportingDF),sep=""))
