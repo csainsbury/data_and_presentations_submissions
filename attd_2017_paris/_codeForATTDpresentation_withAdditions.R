@@ -126,9 +126,9 @@ admissionDboxAGN<-boxplot(plotReportingDF$admissionDurationDays ~ cut(plotReport
 
 
 
-attdAbstractLOS<-boxplot(subset(plotReportingDF,admissionDurationDays>0.2)$admissionDurationDays ~ cut(subset(plotReportingDF,admissionDurationDays>0.2)$eAGyyyyDiff,breaks=seq(-30,30,2)),las=3,varwidth=T,ylim=c(0,10),plot=T,main="LOS vs AGN ATTD abstract 1 (x axis)")
+attdAbstractLOS<-boxplot(subset(plotReportingDF,admissionDurationDays>0.2)$admissionDurationDays ~ cut(subset(plotReportingDF,admissionDurationDays>0.2)$eAGyyyyDiff,breaks=seq(-22,22,2)),las=3,varwidth=T,ylim=c(0,8),plot=T,main="LOS vs AGN ATTD abstract 1 (x axis)")
 
-attdAbstractLOSdecile<-boxplot(subset(plotReportingDF,admissionDurationDays>1)$admissionDurationDays ~cut(subset(plotReportingDF,admissionDurationDays>1)$eAGyyyyDiff,breaks=quantile(plotReportingDF$eAGyyyyDiff, prob = seq(0, 1, length = 11), type = 5)),plot=T,main="IQR vs AGN ATTD abstract 1 (x axis)",las=3,ylim=c(0,3))
+attdAbstractLOSdecile<-boxplot(subset(plotReportingDF,admissionDurationDays>1)$admissionDurationDays ~cut(subset(plotReportingDF,admissionDurationDays>1)$eAGyyyyDiff,breaks=quantile(plotReportingDF$eAGyyyyDiff, prob = seq(0, 1, length = 11), type = 5)),plot=T,main="IQR vs AGN ATTD abstract 1 (x axis)",las=3,ylim=c(0,8))
 
 
 boxplot(plotReportingDF$admissionDurationDays ~ cut(sqrt(plotReportingDF$eAGyyyyDiff^2),breaks=seq(0,30,1)),las=3,varwidth=T,ylim=c(0,10),plot=T,main="IQR vs last measured HbA1c (x axis)")
@@ -160,8 +160,12 @@ for (j in seq(1,nrow(epDayMatrix_nMoreThan100),1)) {
   epDayMatrix_nMoreThan100$propTestP[j]<-prop.test(c(epDayMatrix_nMoreThan100$hypEps[j],1082),c(epDayMatrix_nMoreThan100$admisssonDuration[j],7.733240e+03))$p.value
 }
 
-plot(epDayMatrix_nMoreThan100$AGNlow,epDayMatrix_nMoreThan100$ratio,main="AGN vs hypo episodes per day for all admissions")
-
+plot(epDayMatrix_nMoreThan100$AGNlow,epDayMatrix_nMoreThan100$ratio,main="AGN vs hypo episodes per day for all admissions", pch=16, cex=(sqrt(epDayMatrix_nMoreThan100$hypEps)/10), yaxt="n", xaxt="n", ylab="", xlab="")
+lines(epDayMatrix_nMoreThan100$AGNlow,epDayMatrix_nMoreThan100$ratio, lwd=2)
+axis(2,cex.axis=2)
+axis(1,cex.axis=2)
+mtext("episodes hypoglycemia / day", side=2, line=2.5, cex=2)
+mtext("AGN (mmol/l)", side=1, line=2.5, cex=2)
 
 
 
@@ -208,11 +212,11 @@ boxplot(plotReportingDF$minGlu ~ cut(plotReportingDF$lastHbA1cInFrame,breaks=seq
 
 boxplot(plotReportingDF$minGlu ~ cut(plotReportingDF$yyyy,breaks=seq(1,28,1)),las=3,varwidth=T,ylim=c(1,10),plot=T,main="admission minimum glucose vs first CBG value")
 
-boxplot(plotReportingDF$minGlu ~ cut(plotReportingDF$eAGyyyyDiff,breaks=seq(-30,30,2)),las=3,varwidth=T,ylim=c(0,10),plot=T,main="minGlu vs AGN (x axis)")
+boxplot(plotReportingDF$minGlu ~ cut(plotReportingDF$eAGyyyyDiff,breaks=seq(-22,22,2)),las=3,varwidth=T,ylim=c(1,9),plot=T,main="minGlu vs AGN (x axis)")
 
 boxplot(plotReportingDF$minGlu ~ cut(sqrt(plotReportingDF$eAGyyyyDiff^2),breaks=seq(0,30,1)),las=3,varwidth=T,ylim=c(0,8),plot=T,main="minGlu vs distance from AGN==0 (x axis)")
 
-plot(sqrt(plotReportingDF$eAGyyyyDiff^2), plotReportingDF$minGlu, ylim=c(0,10))
+plot(sqrt(plotReportingDF$eAGyyyyDiff^2), plotReportingDF$minGlu)
 fit <- lm(plotReportingDF$minGlu ~ sqrt(plotReportingDF$eAGyyyyDiff^2))
 abline(fit, col="red")
 
@@ -401,6 +405,7 @@ axis(1,cex.axis=2)
 mtext("Frequency", side=2, line=2.5, cex=2)
 mtext("AGN (mmol/l)", side=1, line=2.5, cex=2)
 
+## IQR plots
 attdAbstractIQR<-boxplot(plotReportingDF$IQR ~ cut(plotReportingDF$eAGyyyyDiff,breaks=seq(-22,22,2)),las=3,varwidth=T,ylim=c(0,10),plot=T,main="IQR vs AGN ATTD abstract 1 (x axis)", yaxt="n")
 axis(2,cex.axis=2)
 mtext("IQR (mmol/l)", side=2, line=2.5, cex=2)
@@ -413,5 +418,48 @@ mtext("IQR (mmol/l)", side=2, line=2.5, cex=2)
     axis(2,cex.axis=2)
     mtext("IQR (mmol/l)", side=2, line=2.5, cex=2)
     
-    boxplot(plotReportingDF$IQR ~ cut(sqrt(plotReportingDF$eAGyyyyDiff^2), breaks=seq(0,22,1)), varwidth=T, las=3, ylim=c(0,10))
+    boxplot(plotReportingDF$IQR ~ cut(sqrt(plotReportingDF$eAGyyyyDiff^2), breaks=seq(0,22,1)), varwidth=T, las=3, ylim=c(0,10), yaxt="n")
+    axis(2,cex.axis=2)
+    mtext("IQR (mmol/l)", side=2, line=2.5, cex=2)
+    
+## LOS plots
+attdAbstractLOS<-boxplot(subset(plotReportingDF,admissionDurationDays>0.2)$admissionDurationDays ~ cut(subset(plotReportingDF,admissionDurationDays>0.2)$eAGyyyyDiff,breaks=seq(-22,22,4)),las=3,varwidth=T,ylim=c(0,8),plot=T,main="LOS vs AGN ATTD abstract 1 (x axis)", yaxt="n")
+axis(2,cex.axis=2)
+mtext("LOS (days)", side=2, line=2.5, cex=2)
+
+    attdAbstractLOS<-boxplot(subset(plotReportingDF,admissionDurationDays>0.2)$admissionDurationDays ~ cut(subset(plotReportingDF,admissionDurationDays>0.2)$yyyy,breaks=seq(0,28,1)),las=3,varwidth=T,ylim=c(0,8),plot=T,main="LOS vs AGN ATTD abstract 1 (x axis)", yaxt="n")
+    axis(2,cex.axis=2)
+      mtext("LOS (days)", side=2, line=2.5, cex=2)
+      
+      attdAbstractLOS<-boxplot(subset(plotReportingDF,admissionDurationDays>0.2)$admissionDurationDays ~ cut(subset(plotReportingDF,admissionDurationDays>0.2)$eAG,breaks=seq(0,28,1)),las=3,varwidth=T,ylim=c(0,8),plot=T,main="LOS vs AGN ATTD abstract 1 (x axis)", yaxt="n")
+      axis(2,cex.axis=2)
+      mtext("LOS (days)", side=2, line=2.5, cex=2)
+      
+      attdAbstractLOS<-boxplot(subset(plotReportingDF,admissionDurationDays>0.2)$admissionDurationDays ~ cut(sqrt(subset(plotReportingDF,admissionDurationDays>0.2)$eAGyyyyDiff^2),breaks=seq(0,28,1)),las=3,varwidth=T,ylim=c(0,8),plot=T,main="LOS vs AGN ATTD abstract 1 (x axis)", yaxt="n")
+      axis(2,cex.axis=2)
+      mtext("LOS (days)", side=2, line=2.5, cex=2)
+      
+## minGlu
+boxplot(plotReportingDF$minGlu ~ cut(plotReportingDF$eAGyyyyDiff,breaks=seq(-22,22,2)),las=3,varwidth=T,ylim=c(1,9),plot=T,main="minGlu vs AGN (x axis)", yaxt="n")
+axis(2,cex.axis=2)
+mtext("minimum glucose recorded (mmol/l)", side=2, line=2.5, cex=2)
+
+    attdAbstractIQR<-boxplot(plotReportingDF$minGlu ~ cut(plotReportingDF$yyyy,breaks=seq(0,28,1)),las=3,varwidth=T,ylim=c(0,10),plot=T,main="minGlu vs initial CBG", yaxt="n")
+    axis(2,cex.axis=2)
+    mtext("minimum glucose (mmol/l)", side=2, line=2.5, cex=2)
+    
+    attdAbstractIQR<-boxplot(plotReportingDF$minGlu ~ cut(plotReportingDF$eAG,breaks=seq(0,28,1)),las=3,varwidth=T,ylim=c(0,10),plot=T,main="minGlu vs eAG", yaxt="n")
+    axis(2,cex.axis=2)
+    mtext("minimum glucose (mmol/l)", side=2, line=2.5, cex=2)
+      
+    
+    # mortality
+    plotReportingDF$dead <- ifelse(plotReportingDF$deathDateUnix>0,1,0)
+    plotReportingDF$inHospitalDeath <- ifelse(plotReportingDF$dead==1 & (plotReportingDF$deathDateUnix - (plotReportingDF$dateplustime1 + plotReportingDF$admissionDuration) < (5*24*60*60)),1,0)
+    
+    fit <- glm(plotReportingDF$inHospitalDeath ~ sqrt(plotReportingDF$eAGyyyyDiff^2) + plotReportingDF$age)
+    summary(fit)
+    
+    fit <- glm(plotReportingDF$inHospitalDeath ~ plotReportingDF$yyyy + plotReportingDF$age)
+    summary(fit)
 
