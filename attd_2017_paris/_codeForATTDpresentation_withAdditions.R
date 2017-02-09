@@ -395,4 +395,23 @@ simpleSurvivalPlot(survivalPlotReportingDF,sqrt((survivalPlotReportingDF$eAGyyyy
 
 
 ## ad hoc plot generation for talk
-hist(plotReportingDF$eAGyyyyDiff, breaks=seq(-28,28,0.11), xlab=("AGN (mmol/l)"), main=paste("Distribution of AGN values. n admissions= ",nrow(plotReportingDF),sep=""))
+hist(plotReportingDF$eAGyyyyDiff, breaks=seq(-28,28,0.5), yaxt="n", xaxt="n", ylab="", xlab="", main="")
+axis(2,cex.axis=2)
+axis(1,cex.axis=2)
+mtext("Frequency", side=2, line=2.5, cex=2)
+mtext("AGN (mmol/l)", side=1, line=2.5, cex=2)
+
+attdAbstractIQR<-boxplot(plotReportingDF$IQR ~ cut(plotReportingDF$eAGyyyyDiff,breaks=seq(-22,22,2)),las=3,varwidth=T,ylim=c(0,10),plot=T,main="IQR vs AGN ATTD abstract 1 (x axis)", yaxt="n")
+axis(2,cex.axis=2)
+mtext("IQR (mmol/l)", side=2, line=2.5, cex=2)
+
+    attdAbstractIQR<-boxplot(plotReportingDF$IQR ~ cut(plotReportingDF$yyyy,breaks=seq(0,28,1)),las=3,varwidth=T,ylim=c(0,10),plot=T,main="IQR vs initial CBG", yaxt="n")
+    axis(2,cex.axis=2)
+    mtext("IQR (mmol/l)", side=2, line=2.5, cex=2)
+    
+    attdAbstractIQR<-boxplot(plotReportingDF$IQR ~ cut(plotReportingDF$eAG,breaks=seq(0,28,1)),las=3,varwidth=T,ylim=c(0,10),plot=T,main="eAG vs initial CBG", yaxt="n")
+    axis(2,cex.axis=2)
+    mtext("IQR (mmol/l)", side=2, line=2.5, cex=2)
+    
+    boxplot(plotReportingDF$IQR ~ cut(sqrt(plotReportingDF$eAGyyyyDiff^2), breaks=seq(0,22,1)), varwidth=T, las=3, ylim=c(0,10))
+
